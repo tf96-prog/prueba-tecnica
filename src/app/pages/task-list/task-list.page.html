@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>App de Tareas</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-segment [(ngModel)]="filter">
+    <ion-segment-button value="all">Todas</ion-segment-button>
+    <ion-segment-button value="completed">Completadas</ion-segment-button>
+    <ion-segment-button value="pending">Pendientes</ion-segment-button>
+  </ion-segment>
+
+  <ion-list>
+    <ion-item *ngFor="let task of filteredTasks">
+      <ion-label [ngClass]="{ 'completed-task': task.completado }">
+        {{ task.titulo }}
+        <p>{{ task.descripcion }}</p>
+      </ion-label>
+      <ion-checkbox [(ngModel)]="task.completado" (ionChange)="toggleTaskCompletion(task)"></ion-checkbox>
+      <ion-buttons slot="end">
+        <ion-button (click)="editTask(task)">Editar</ion-button>
+        <ion-button color="danger" (click)="deleteTask(task.id)">Eliminar</ion-button>
+      </ion-buttons>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addTask()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
+
+<ion-content>
+  <ion-searchbar 
+    [(ngModel)]="searchTerm" 
+    (ionInput)="filterTasks()"
+    placeholder="Buscar por título">
+  </ion-searchbar>
+
+  <ion-list>
+    <ion-item *ngFor="let task of filteredTasks">
+      <ion-label>
+        <h2>{{ task.titulo }}</h2>
+        <p>{{ task.descripcion }}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ion-content>
